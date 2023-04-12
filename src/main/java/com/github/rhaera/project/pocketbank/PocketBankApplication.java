@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PocketBankApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PocketBankApplication.class, args);
-	}
 
+		SpringApplication.run(PocketBankApplication.class, args);
+
+	}
 }
