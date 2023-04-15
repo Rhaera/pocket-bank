@@ -3,3 +3,5 @@ spring:
     mongodb:
       uri: mongodb+srv://admin:admin@contaspix.hqbpdxt.mongodb.net/?retryWrites=true&w=majority
       database: Agencies
+  rabbitmq:
+    addresses: amqps://soiggbyt:9J6xLVyydcoIEuQeMVlrUMBXVyfi-2qK@jackal.rmq.cloudamqp.com/soiggbyt
