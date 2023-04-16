@@ -1,6 +1,6 @@
 package com.github.rhaera.project.pocketbank.model.dto.mongodb;
 
-import com.github.rhaera.project.pocketbank.model.entity.abstraction.ContaBancaria;
+import com.github.rhaera.project.pocketbank.model.entity.domain.implementation.ContaBancaria;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

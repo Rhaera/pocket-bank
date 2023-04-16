@@ -1,10 +1,10 @@
-package com.github.rhaera.project.pocketbank.model.entity.abstraction;
+package com.github.rhaera.project.pocketbank.model.entity.domain.implementation;
 
 import com.github.rhaera.project.pocketbank.controller.exception.TipoContaIlegalException;
+import com.github.rhaera.project.pocketbank.model.entity.interfaces.ContaMultiModal;
 import com.github.rhaera.project.pocketbank.model.entity.domain.Client;
 import com.github.rhaera.project.pocketbank.model.entity.domain.MovimentacaoFinanceira;
 import com.github.rhaera.project.pocketbank.model.utility.UtilLocalizacao;
-import com.github.rhaera.project.pocketbank.service.abstraction.ContaMultiModal;
 
 import static com.github.rhaera.project.pocketbank.model.entity.domain.MovimentacaoFinanceira.TipoTransacao;
 
@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 @Getter
+@ToString
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class ContaBancaria implements ContaMultiModal {
     @NonNull
@@ -39,7 +40,6 @@ public abstract class ContaBancaria implements ContaMultiModal {
             return this.tipoPredominante == 3 ? "Conta corrente" : (this.tipoPredominante == 2 ? "Conta poupança" : "Conta salário");
         }
     }
-
     @NonNull
     private final String agencia;
     @NonNull
@@ -49,15 +49,15 @@ public abstract class ContaBancaria implements ContaMultiModal {
     @NonNull
     private final LocalDate criacaoDaConta;
     private final List<MovimentacaoFinanceira> extrato;
-    private BigDecimal saldo;
-    private boolean possuiCartaoDebito;
+    @Setter(value = AccessLevel.PROTECTED) private BigDecimal saldo;
+    private Boolean cartaoDebito;
 
     public abstract static class Builder<T extends Builder<T>> {
         private final EnumSet<TipoConta> tipos = EnumSet.noneOf(TipoConta.class);
         private final String agencia;
         private final String numeroConta;
         private final Client client;
-        private LocalDate criacaoDaConta = LocalDate.now();
+        private final LocalDate criacaoDaConta = LocalDate.now();
         private final List<MovimentacaoFinanceira> extrato = new ArrayList<>();
         private BigDecimal saldo = BigDecimal.ZERO;
         private boolean cartaoDebito = false;
@@ -74,11 +74,6 @@ public abstract class ContaBancaria implements ContaMultiModal {
 
         public T adicionarTipoConta(TipoConta tipoConta) {
             tipos.add(Objects.requireNonNull(tipoConta));
-            return self();
-        }
-
-        public T programarCriacaoDaConta(LocalDate dataProgramada) {
-            criacaoDaConta = dataProgramada;
             return self();
         }
 
@@ -104,7 +99,7 @@ public abstract class ContaBancaria implements ContaMultiModal {
         criacaoDaConta     = builder.criacaoDaConta;
         extrato            = builder.extrato;
         saldo              = builder.saldo;
-        possuiCartaoDebito = builder.cartaoDebito;
+        cartaoDebito       = builder.cartaoDebito;
     }
 
     public abstract BigDecimal saque(BigDecimal saque);
@@ -127,7 +122,13 @@ public abstract class ContaBancaria implements ContaMultiModal {
     }
 
     @Override
-    public boolean definirModoDeUsor(EnumSet<? extends TipoConta> options) {
+    public boolean definirTiposDaConta(EnumSet<? extends TipoConta> options) {
         return this.tiposDaConta.addAll(options);
+    }
+
+    public boolean pedirCartaoDebitoCasoNaoTenha() {
+        if (this.cartaoDebito) return false;
+        this.cartaoDebito = true;
+        return true;
     }
 }
