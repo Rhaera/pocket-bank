@@ -1,14 +1,40 @@
 package com.github.rhaera.project.pocketbank.model.entity.domain;
 
 import com.github.rhaera.project.pocketbank.model.entity.abstraction.ContaBancaria;
-import lombok.NonNull;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.io.IOException;
+import java.math.BigDecimal;
 
 public class ContaCorrente extends ContaBancaria {
 
-    public ContaCorrente(@NonNull String agencia, @NonNull String numeroConta, @NonNull Client client, @NonNull LocalDate criacaoDaConta, List<MovimentacaoFinanceira> extrato) {
-        super(agencia, numeroConta, client, criacaoDaConta, extrato);
+    public static class Builder extends ContaBancaria.Builder<Builder> {
+
+        public Builder(String numeroConta, Client client) throws IOException {
+            super(numeroConta, client);
+        }
+
+        @Override
+        public ContaCorrente build() {
+            return new ContaCorrente(this);
+        }
+
+        @Override
+        public Builder self() {
+            return this;
+        }
+    }
+
+    private ContaCorrente(Builder builder) {
+        super(builder);
+    }
+
+    @Override
+    public BigDecimal saque(BigDecimal saque) {
+        return saque;
+    }
+
+    @Override
+    public BigDecimal deposito(BigDecimal deposito) {
+        return deposito;
     }
 }

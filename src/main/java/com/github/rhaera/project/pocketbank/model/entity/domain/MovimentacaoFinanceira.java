@@ -1,29 +1,30 @@
 package com.github.rhaera.project.pocketbank.model.entity.domain;
 
+import com.github.rhaera.project.pocketbank.model.entity.abstraction.ContaBancaria;
+
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@RequiredArgsConstructor
 @Getter
 @Setter
 @ToString
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class MovimentacaoFinanceira implements Cloneable {
 
     @NonNull
     private final LocalDateTime dataTransacao;
     @NonNull
     private final TipoTransacao tipoTransacao;
-    @NonNull
     private final String numeroContaOrigem;
     private final String numeroContaDestino;
     private String descricao;
     private BigDecimal taxaTransaction;
 
     public String formatarParaExtrato() {
-        return DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(this.dataTransacao) + " - " + tipoTransacao + ": " + descricao;
+        return DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(dataTransacao) + " - " + tipoTransacao + ": " + descricao;
     }
 
     @Override
@@ -36,11 +37,12 @@ public class MovimentacaoFinanceira implements Cloneable {
         }
     }
 
-    private enum TipoTransacao {
+    public enum TipoTransacao {
         SAQUE("saque"),
         DEPOSITO("depóito"),
         PIX("pix"),
-        TRANSFERENCIA("transferência");
+        TRANSFERENCIA("transferência"),
+        EMPRESTIMO("empréstimo");
 
         private final String tipo;
 
@@ -54,5 +56,54 @@ public class MovimentacaoFinanceira implements Cloneable {
         }
     }
 
-    // builder
+    public static class Builder {
+        private final LocalDateTime data;
+        private final TipoTransacao transacao;
+        private String contaOrigem = "";
+        private String contaDestino = "";
+        private String descricao = "";
+        private BigDecimal taxa = BigDecimal.ZERO;
+
+        public Builder(LocalDateTime data, TipoTransacao transacao) {
+            this.data      = data;
+            this.transacao = transacao;
+        }
+
+        public Builder definirContaOrigem(ContaBancaria conta) {
+            this.contaOrigem = conta.getNumeroConta();
+            return this;
+        }
+
+        public Builder definirContaDestino(ContaBancaria conta) {
+            this.contaDestino = conta.getNumeroConta();
+            return this;
+        }
+
+        public Builder definirDescricao(String descricao) {
+            this.descricao = descricao;
+            return this;
+        }
+
+        public Builder definirTaxa(BigDecimal taxa) {
+            this.taxa = taxa;
+            return this;
+        }
+
+        public MovimentacaoFinanceira build() {
+            return new MovimentacaoFinanceira(this);
+        }
+    }
+
+    private MovimentacaoFinanceira(Builder builder) {
+        this.dataTransacao      = builder.data;
+        this.tipoTransacao      = builder.transacao;
+        this.numeroContaOrigem  = builder.contaOrigem;
+        this.numeroContaDestino = builder.contaDestino;
+        this.descricao          = builder.descricao;
+        this.taxaTransaction    = builder.taxa;
+    }
+
+    public static MovimentacaoFinanceira getMovimentacao(LocalDateTime dataEHora, TipoTransacao tipo, String descricao) {
+        return new Builder(dataEHora, tipo).definirDescricao(descricao).build();
+    }
 }

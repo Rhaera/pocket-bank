@@ -1,7 +1,23 @@
 spring:
+  jpa:
+    open-in-view: true
   data:
     mongodb:
       uri: mongodb+srv://admin:admin@contaspix.hqbpdxt.mongodb.net/?retryWrites=true&w=majority
       database: Agencies
   rabbitmq:
     addresses: amqps://soiggbyt:9J6xLVyydcoIEuQeMVlrUMBXVyfi-2qK@jackal.rmq.cloudamqp.com/soiggbyt
+  flyway:
+    enabled: true
+    baseline-version: 1
+    locations: [classpath:db/migrations]
+    sql-migration-suffixes: .sql
+    sql-migration-prefix: table
+    baseline-on-migrate: true
+    schemas: public
+    validate-migration-naming: true
+  datasource:
+    url: jdbc:postgresql://babar.db.elephantsql.com:5432/pwdslund?socketTimeout=3
+    username: pwdslund
+    password: bfbm-gTQtxdwIETQGhxWHaj7qvzplzzJ
+    driver-class-name: org.postgresql.Driver

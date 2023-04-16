@@ -1,6 +1,7 @@
 package com.github.rhaera.project.pocketbank.model.entity.domain;
 
 import com.github.rhaera.project.pocketbank.model.entity.abstraction.ContaBancaria;
+
 import lombok.*;
 
 import org.springframework.data.annotation.Id;
@@ -18,12 +19,10 @@ import java.util.Objects;
 @ToString
 @Document("bank_agencies")
 public class Agencia {
-
     @Id
     private String codigoAgencia;
 
-    @DBRef
-    @Field("agency_accounts") private List<ContaBancaria> contasAtivas;
+    @DBRef @Field("agency_accounts") private List<ContaBancaria> contasAtivas;
 
     @Override
     public boolean equals(Object o) {
@@ -35,6 +34,6 @@ public class Agencia {
 
     @Override
     public int hashCode() {
-        return Objects.hash(codigoAgencia);
+        return Objects.hash(codigoAgencia.concat(codigoAgencia)); // (i << 5) - i
     }
 }

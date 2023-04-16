@@ -1,6 +1,6 @@
 package com.github.rhaera.project.pocketbank.model.mapper;
 
-import com.github.rhaera.project.pocketbank.model.dto.RequisicaoCadastrarConta;
+import com.github.rhaera.project.pocketbank.model.dto.mongodb.RequisicaoCadastrarConta;
 import com.github.rhaera.project.pocketbank.model.entity.abstraction.ContaBancaria;
 
 import org.mapstruct.*;

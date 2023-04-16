@@ -1,4 +1,4 @@
-package com.github.rhaera.project.pocketbank.model.dto;
+package com.github.rhaera.project.pocketbank.model.dto.mongodb;
 
 import com.github.rhaera.project.pocketbank.model.entity.abstraction.ContaBancaria;
 
