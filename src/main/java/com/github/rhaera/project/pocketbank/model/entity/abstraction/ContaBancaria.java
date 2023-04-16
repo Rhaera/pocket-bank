@@ -8,10 +8,7 @@ import com.github.rhaera.project.pocketbank.service.abstraction.ContaMultiModal;
 
 import static com.github.rhaera.project.pocketbank.model.entity.domain.MovimentacaoFinanceira.TipoTransacao;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -23,7 +20,6 @@ import java.util.*;
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class ContaBancaria implements ContaMultiModal {
-
     @NonNull
     private final Set<TipoConta> tiposDaConta;
     public enum TipoConta {
@@ -54,6 +50,7 @@ public abstract class ContaBancaria implements ContaMultiModal {
     private final LocalDate criacaoDaConta;
     private final List<MovimentacaoFinanceira> extrato;
     private BigDecimal saldo;
+    private boolean possuiCartaoDebito;
 
     public abstract static class Builder<T extends Builder<T>> {
         private final EnumSet<TipoConta> tipos = EnumSet.noneOf(TipoConta.class);
@@ -63,6 +60,7 @@ public abstract class ContaBancaria implements ContaMultiModal {
         private LocalDate criacaoDaConta = LocalDate.now();
         private final List<MovimentacaoFinanceira> extrato = new ArrayList<>();
         private BigDecimal saldo = BigDecimal.ZERO;
+        private boolean cartaoDebito = false;
 
         public Builder(String numeroConta, Client client) throws IOException {
             this.agencia = UtilLocalizacao.agenciaMaisProxima(client.getCep());
@@ -91,16 +89,22 @@ public abstract class ContaBancaria implements ContaMultiModal {
                                                                 String.format("PARABÉNS! VOCÊ POSSUI %.2f COMO SALDO DE ABERTURA", saldo)));
             return self();
         }
+
+        public T requisitarCartaoDebito() {
+            cartaoDebito = true;
+            return self();
+        }
     }
 
     public ContaBancaria(Builder<?> builder) {
-        tiposDaConta   = builder.tipos.clone();
-        agencia        = builder.agencia;
-        numeroConta    = builder.numeroConta;
-        client         = builder.client;
-        criacaoDaConta = builder.criacaoDaConta;
-        extrato        = builder.extrato;
-        saldo          = builder.saldo;
+        tiposDaConta       = builder.tipos.clone();
+        agencia            = builder.agencia;
+        numeroConta        = builder.numeroConta;
+        client             = builder.client;
+        criacaoDaConta     = builder.criacaoDaConta;
+        extrato            = builder.extrato;
+        saldo              = builder.saldo;
+        possuiCartaoDebito = builder.cartaoDebito;
     }
 
     public abstract BigDecimal saque(BigDecimal saque);
