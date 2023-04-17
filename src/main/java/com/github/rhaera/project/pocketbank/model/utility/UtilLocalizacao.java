@@ -15,15 +15,16 @@ public final class UtilLocalizacao {
     private static final String BRASIL_UFS = "src/main/resources/static/states.txt";
 
     private UtilLocalizacao() {
+
     }
 
     static {
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br =
             new BufferedReader(new FileReader(BRASIL_UFS))) {
-            while (br.readLine() != null) {
-                sb.append(br.readLine());
-            }
+            br.lines()
+                .map(sb::append)
+                .close();
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

@@ -1,0 +1,10 @@
+﻿Rio de Janeiro - 0001
+São Paulo - 0002
+Brasília - 0003
+Cuiabá - 0004
+Florianópolis - 0005
+Porto Alegre - 0006
+Belém - 0007
+Manaus - 0008
+Recife - 0009
+Salvador - 0010

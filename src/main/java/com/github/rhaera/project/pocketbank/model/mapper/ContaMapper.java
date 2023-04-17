@@ -6,7 +6,7 @@ import com.github.rhaera.project.pocketbank.model.entity.domain.implementation.C
 import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
-public interface ClientMapper {
+public interface ContaMapper {
     ContaBancaria toEntity(RequisicaoCadastrarConta cadastrarConta);
     RequisicaoCadastrarConta toDTO(ContaBancaria contaBancaria);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
