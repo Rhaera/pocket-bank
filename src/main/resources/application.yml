@@ -1,6 +1,8 @@
 spring:
   jpa:
     open-in-view: true
+    hibernate:
+      ddl-auto: update
   data:
     mongodb:
       uri: mongodb+srv://admin:admin@contaspix.hqbpdxt.mongodb.net/?retryWrites=true&w=majority
@@ -19,5 +21,9 @@ spring:
   datasource:
     url: jdbc:postgresql://babar.db.elephantsql.com:5432/pwdslund?socketTimeout=3
     username: pwdslund
-    password: bfbm-gTQtxdwIETQGhxWHaj7qvzplzzJ
+    password: 2aPVcrY7fJC483shrvz54gNZ6xYFupJz
     driver-class-name: org.postgresql.Driver
+
+springdoc:
+  api-docs:
+    path: /api-docs

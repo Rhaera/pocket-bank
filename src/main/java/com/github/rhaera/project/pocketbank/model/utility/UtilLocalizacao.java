@@ -9,19 +9,16 @@ import java.nio.charset.StandardCharsets;
 
 @Component
 public final class UtilLocalizacao {
-
     private static final String TODAS_AS_UFS_JUNTAS;
     private static final String NO_AGENCIE = "0000";
     private static final String BRASIL_UFS = "src/main/resources/static/states.txt";
 
     private UtilLocalizacao() {
-
     }
 
     static {
         StringBuilder sb = new StringBuilder();
-        try (BufferedReader br =
-            new BufferedReader(new FileReader(BRASIL_UFS))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(BRASIL_UFS))) {
             br.lines()
                 .map(sb::append)
                 .close();
@@ -47,8 +44,7 @@ public final class UtilLocalizacao {
             e.printStackTrace();
             throw new IOException("CEP inválido!");
         }
-        if (TODAS_AS_UFS_JUNTAS.contains(uf)) return getAgencia(uf);
-        return NO_AGENCIE;
+        return TODAS_AS_UFS_JUNTAS.contains(uf) ? getAgencia(uf) : NO_AGENCIE;
     }
 
     private static String getAgencia(String uf) {
@@ -56,8 +52,7 @@ public final class UtilLocalizacao {
                 (!ehDoNordeste(uf).equals(NO_AGENCIE) ? ehDoNordeste(uf) :
                         (!ehDoSudeste(uf).equals(NO_AGENCIE) ? ehDoSudeste(uf) :
                                 (!ehDoSul(uf).equals(NO_AGENCIE) ? ehDoSul(uf) :
-                                        (!ehDoCentroOeste(uf).equals(NO_AGENCIE) ? ehDoCentroOeste(uf) :
-                                                NO_AGENCIE))));
+                                        (!ehDoCentroOeste(uf).equals(NO_AGENCIE) ? ehDoCentroOeste(uf) : NO_AGENCIE))));
     }
 
     private static String ehDoNorte(String uf) {
