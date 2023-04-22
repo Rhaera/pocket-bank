@@ -112,13 +112,12 @@ public abstract class ContaBancaria implements ContaMultiModal {
         if (obj == null || getClass() != obj.getClass()) return false;
         ContaBancaria conta = (ContaBancaria) obj;
         return this.numeroConta.equals(conta.numeroConta) &&
-                this.agencia.equals(conta.agencia) &&
                 this.client.getCpf().equals(conta.client.getCpf());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(agencia.concat(agencia), numeroConta.concat(agencia));
+        return Objects.hash(agencia.concat(agencia), numeroConta.concat(agencia), client.getCpf());
     }
 
     @Override
@@ -130,5 +129,11 @@ public abstract class ContaBancaria implements ContaMultiModal {
         if (this.cartaoDebito) return false;
         this.cartaoDebito = true;
         return true;
+    }
+
+    public ContaBancaria equalizadorDosTiposDaContaEDadosDoCliente(ContaBancaria contaAtualizada) throws IOException {
+        this.tiposDaConta.addAll(contaAtualizada.tiposDaConta);
+        this.client.atualizarDadosViaveis(contaAtualizada.client);
+        return this;
     }
 }

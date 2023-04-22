@@ -10,6 +10,7 @@ import lombok.Getter;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.EnumSet;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class ContaCorrente extends ContaBancaria implements ContaTripla {
     private boolean portabilidade;
     private boolean cartaoCredito;
+    private LocalDate dataDeFabricacaoCartaoCredito;
     private String chaveAleatoria;
     private final Pix chavesPix;
 
@@ -79,7 +81,9 @@ public class ContaCorrente extends ContaBancaria implements ContaTripla {
         cartaoCredito  = builder.cartaoCredito;
         chaveAleatoria = builder.chaveAleatoria;
         chavesPix      = builder.chavesPix;
+        if (cartaoCredito) dataDeFabricacaoCartaoCredito = LocalDate.now();
     }
+
     @Override
     public BigDecimal saque(BigDecimal saque) {
         this.getExtrato().add(saqueNaConta(this.getSaldo(), saque));
@@ -108,6 +112,7 @@ public class ContaCorrente extends ContaBancaria implements ContaTripla {
             return;
         }
         cartaoCredito = true;
+        dataDeFabricacaoCartaoCredito = LocalDate.now();
     }
     public BigDecimal definirSaldoParaPoupanca(BigDecimal saldoParaPoupanca) {
         this.getExtrato().add(this.definirSaldoDestinadoAPoupanca(this.getSaldo(), saldoParaPoupanca));

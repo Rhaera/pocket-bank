@@ -1,7 +1,6 @@
 package com.github.rhaera.project.pocketbank.model.entity;
 
 import com.github.rhaera.project.pocketbank.model.dto.sql.AgenciaDTO;
-import com.github.rhaera.project.pocketbank.model.entity.domain.Agencia;
 
 import jakarta.persistence.*;
 
@@ -22,10 +21,10 @@ public class AgenciaEntity {
 
     public AgenciaEntity() {
     }
-    public AgenciaEntity(Agencia agencia) {
+    /**public AgenciaEntity(Agencia agencia) {
         number   = agencia.getCodigoAgencia();
         accounts = agencia.getContasAtivas().size();
-    }
+    }*/
     public AgenciaEntity(Long id, String number, String address, Integer accounts) {
         this.id       = id;
         this.number   = number;

@@ -19,9 +19,8 @@ import java.util.Objects;
 @ToString
 @Document("bank_agencies")
 public class Agencia {
-    @Id
-    private String codigoAgencia;
 
+    @Id private String codigoAgencia;
     @DBRef @Field("agency_accounts") private List<ContaBancaria> contasAtivas;
 
     @Override
@@ -34,6 +33,7 @@ public class Agencia {
 
     @Override
     public int hashCode() {
-        return Objects.hash(codigoAgencia.concat(codigoAgencia)); // (i << 5) - i
+        int i = Objects.hash(codigoAgencia.concat(codigoAgencia));
+        return (i << 5) - i;
     }
 }

@@ -16,7 +16,7 @@ import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Schema(title = "SWAGGER TEST")
+@Schema(title = "SWAGGER TEST PostgreSQL")
 @Relation(collectionRelation = "agencies")
 public class AgenciaDTO extends RepresentationModel<AgenciaDTO> implements Serializable {
 

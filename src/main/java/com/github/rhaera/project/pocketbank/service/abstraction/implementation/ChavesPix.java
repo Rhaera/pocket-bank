@@ -4,12 +4,13 @@ import com.github.rhaera.project.pocketbank.model.utility.UtilFormatacoes;
 
 import lombok.NonNull;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Function;
 
-public class ChavesPix<TipoChave> implements Set<ChavesPix.TipoChave> {
+public class ChavesPix<TipoChave> implements Set<ChavesPix.TipoChave>, Serializable {
 
     private final Set<ChavesPix.TipoChave> chavesPix;
 
@@ -83,7 +84,6 @@ public class ChavesPix<TipoChave> implements Set<ChavesPix.TipoChave> {
     }
 
     public enum TipoChave {
-
         CPF(1, UtilFormatacoes::formatarCPF),
         CELULAR(2, UtilFormatacoes::formatarCelular),
         EMAIL(3, UtilFormatacoes::validarFormatacaoEmail),

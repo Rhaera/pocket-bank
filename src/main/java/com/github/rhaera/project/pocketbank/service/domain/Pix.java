@@ -10,7 +10,7 @@ import lombok.NonNull;
 import java.util.Collection;
 import java.util.EnumSet;
 
-public class Pix extends ChavesPix<TipoChave> {
+public final class Pix extends ChavesPix<TipoChave> {
 
     private final int MAX_NUM_CHAVES_PIX = 3;
 
