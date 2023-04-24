@@ -19,9 +19,9 @@ spring:
     schemas: public
     validate-migration-naming: true
   datasource:
-    url: jdbc:postgresql://babar.db.elephantsql.com:5432/pwdslund?socketTimeout=3
-    username: pwdslund
-    password: 2aPVcrY7fJC483shrvz54gNZ6xYFupJz
+    url: jdbc:postgresql://babar.db.elephantsql.com:5432/mrzniwhc?socketTimeout=3
+    username: mrzniwhc
+    password: 3XsZiHozrHTpq8tz9gNE6aY0RZxe9P5T
     driver-class-name: org.postgresql.Driver
   mustache:
     prefix: [classpath:/templates/]

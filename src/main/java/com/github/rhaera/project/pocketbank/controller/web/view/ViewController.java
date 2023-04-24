@@ -11,13 +11,9 @@ public class ViewController {
 
     @GetMapping(value = {"/", "/home"})
     public String hello(Model model) {
-        String t = "GLÓRYAH ETERNA";
-        String m = "YAH!";
-        String p = "ALL GLORY TO THE ETERNAL FATHER";
-        model.addAttribute("title", t);
-        model.addAttribute("message", m);
-        model.addAttribute("thanks", p);
+        model.addAttribute("title", "POCKET BANK");
+        model.addAttribute("message", "Welcome To...A Bank In A Nutshell!!!");
+        model.addAttribute("thanks", "Come with me! Let's explore this AMAZING WEBAPP!!!");
         return "home";
     }
-
 }
