@@ -1,6 +1,6 @@
 package com.github.rhaera.project.pocketbank.model.dto.sql;
 
-import com.github.rhaera.project.pocketbank.controller.AgenciaController;
+import com.github.rhaera.project.pocketbank.controller.web.api.AgenciaController;
 import com.github.rhaera.project.pocketbank.model.entity.AgenciaEntity;
 
 import lombok.Data;

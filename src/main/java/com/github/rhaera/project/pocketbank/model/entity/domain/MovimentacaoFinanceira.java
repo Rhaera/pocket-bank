@@ -1,9 +1,13 @@
 package com.github.rhaera.project.pocketbank.model.entity.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.rhaera.project.pocketbank.model.entity.domain.implementation.ContaBancaria;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 @Setter
 @ToString
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class MovimentacaoFinanceira implements Cloneable {
+public class MovimentacaoFinanceira implements Cloneable, Serializable {
 
     @NonNull
     private final LocalDateTime dataTransacao;
@@ -37,11 +41,17 @@ public class MovimentacaoFinanceira implements Cloneable {
         }
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     public enum TipoTransacao {
+        @JsonProperty("saque")
         SAQUE("saque"),
+        @JsonProperty("depósito")
         DEPOSITO("depóito"),
+        @JsonProperty("pix")
         PIX("pix"),
+        @JsonProperty("transferência")
         TRANSFERENCIA("transferência"),
+        @JsonProperty("empréstimo")
         EMPRESTIMO("empréstimo");
 
         private final String tipo;

@@ -40,6 +40,7 @@ public abstract class ContaBancaria implements ContaMultiModal {
             return this.tipoPredominante == 3 ? "Conta corrente" : (this.tipoPredominante == 2 ? "Conta poupança" : "Conta salário");
         }
     }
+
     @NonNull
     private final String agencia;
     @NonNull
@@ -74,6 +75,11 @@ public abstract class ContaBancaria implements ContaMultiModal {
 
         public T adicionarTipoConta(TipoConta tipoConta) {
             tipos.add(Objects.requireNonNull(tipoConta));
+            return self();
+        }
+
+        public T adicionarTiposConta(EnumSet<TipoConta> tiposConta) {
+            tipos.addAll(Objects.requireNonNull(tiposConta));
             return self();
         }
 
@@ -129,11 +135,5 @@ public abstract class ContaBancaria implements ContaMultiModal {
         if (this.cartaoDebito) return false;
         this.cartaoDebito = true;
         return true;
-    }
-
-    public ContaBancaria equalizadorDosTiposDaContaEDadosDoCliente(ContaBancaria contaAtualizada) throws IOException {
-        this.tiposDaConta.addAll(contaAtualizada.tiposDaConta);
-        this.client.atualizarDadosViaveis(contaAtualizada.client);
-        return this;
     }
 }

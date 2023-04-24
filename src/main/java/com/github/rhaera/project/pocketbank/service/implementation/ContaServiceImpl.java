@@ -1,9 +1,9 @@
 package com.github.rhaera.project.pocketbank.service.implementation;
 
 import com.github.rhaera.project.pocketbank.model.dto.sql.AgenciaDTO;
+import com.github.rhaera.project.pocketbank.model.dto.mongodb.ContaObject;
 import com.github.rhaera.project.pocketbank.model.entity.domain.Agencia;
 import com.github.rhaera.project.pocketbank.model.entity.domain.Client;
-import com.github.rhaera.project.pocketbank.model.entity.domain.implementation.ContaBancaria;
 import com.github.rhaera.project.pocketbank.model.utility.UtilFormatacoes;
 import com.github.rhaera.project.pocketbank.repository.ContaRepository;
 import com.github.rhaera.project.pocketbank.service.AgenciaService;
@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ContaServiceImpl implements ContaService {
-
     private final ContaRepository repository;
 
     private final AgenciaService service;
@@ -38,9 +37,9 @@ public class ContaServiceImpl implements ContaService {
     }
 
     @Override
-    public Optional<ContaBancaria> createAccount(ContaBancaria accountRequest) {
-        if (getAgencyById(accountRequest.getAgencia().trim()).isEmpty() || verifyClient(accountRequest.getClient().getCpf())) return Optional.empty();
-        Agencia agencia = getAgencyById(accountRequest.getAgencia().trim()).get();
+    public Optional<ContaObject> createAccount(ContaObject accountRequest) { //trim
+        if (getAgencyById(accountRequest.getNumAgencia().trim()).isEmpty()) return Optional.empty(); //|| verifyClient(accountRequest.getCliente().getNonNullCpf())) return Optional.empty();
+        Agencia agencia = getAgencyById(accountRequest.getNumAgencia().trim()).get();
         agencia.getContasAtivas().add(accountRequest);
         repository.save(agencia);
         return Optional.of(accountRequest);
@@ -52,17 +51,17 @@ public class ContaServiceImpl implements ContaService {
     }
 
     @Override
-    public Optional<ContaBancaria> getBankAccountByAgency(String agencyNumber, String accountNumber) {
+    public Optional<ContaObject> getBankAccountByAgency(String agencyNumber, String accountNumber) {
         return getAgencyById(agencyNumber).isPresent() ?
                 (getAgencyById(agencyNumber).get()
                                             .getContasAtivas()
                                             .stream()
-                                            .anyMatch(account -> account.getNumeroConta()
+                                            .anyMatch(account -> account.getNumConta()
                                                                         .equals(accountNumber)) ?
                 getAgencyById(agencyNumber).get()
                                             .getContasAtivas()
                                             .stream()
-                                            .filter(account -> account.getNumeroConta()
+                                            .filter(account -> account.getNumConta()
                                                                         .equals(accountNumber))
                                             .findAny() : Optional.empty()) :
                 Optional.empty();
@@ -74,23 +73,23 @@ public class ContaServiceImpl implements ContaService {
     }
 
     @Override
-    public Map<String, List<ContaBancaria>> getAllAccountsGroupingByAgency() {
-        Map<String, List<ContaBancaria>> accountListMapper = new HashMap<>(); // challenge
+    public Map<String, List<ContaObject>> getAllAccountsGroupingByAgency() {
+        Map<String, List<ContaObject>> accountListMapper = new HashMap<>(); // challenge
         getAllAgencies().forEach(agencia -> accountListMapper.put(agencia.getCodigoAgencia(), agencia.getContasAtivas()));
         return accountListMapper;
     }
 
     @Override
-    public List<ContaBancaria> getAllAccountsByAgency(String number) {
+    public List<ContaObject> getAllAccountsByAgency(String number) {
         return repository.findById(number).isPresent() ? repository.findById(number)
                                                                     .get()
                                                                     .getContasAtivas() : Collections.emptyList();
     }
 
     @Override
-    public Optional<ContaBancaria> updateAccountByAgency(String agencyNumber, ContaBancaria requestedAccount) throws IOException {
-        if (verifyAgencyAndAccount(agencyNumber, requestedAccount.getNumeroConta())) return Optional.empty();
-        ContaBancaria existingAccount = getBankAccountByAgency(agencyNumber, requestedAccount.getNumeroConta()
+    public Optional<ContaObject> updateAccountByAgency(String agencyNumber, ContaObject requestedAccount) throws IOException {
+        if (verifyAgencyAndAccount(agencyNumber, requestedAccount.getNumConta())) return Optional.empty();
+        ContaObject existingAccount = getBankAccountByAgency(agencyNumber, requestedAccount.getNumConta()
                                                                                             .trim())
                                                                                             .orElseThrow();
         existingAccount = existingAccount.equalizadorDosTiposDaContaEDadosDoCliente(requestedAccount);
@@ -101,10 +100,10 @@ public class ContaServiceImpl implements ContaService {
     }
 
     @Override
-    public Optional<ContaBancaria> updateAccountByClient(String cpf) throws IOException {
+    public Optional<ContaObject> updateAccountByClient(String cpf) throws IOException {
         if (verifyClient(cpf)) {
-            ContaBancaria existingAccount = searchAccountByClient(cpf);
-            return updateAccountByAgency(existingAccount.getAgencia(), existingAccount);
+            ContaObject existingAccount = searchAccountByClient(cpf);
+            return updateAccountByAgency(existingAccount.getNumAgencia(), existingAccount);
         }
         return Optional.empty();
     }
@@ -120,20 +119,20 @@ public class ContaServiceImpl implements ContaService {
     }
 
     @Override
-    public Optional<ContaBancaria> deleteAccountByAgency(String agencyNumber, String accountNumber) {
+    public Optional<ContaObject> deleteAccountByAgency(String agencyNumber, String accountNumber) {
         if (verifyAgencyAndAccount(agencyNumber, accountNumber)) return Optional.empty();
         Agencia agency = getAgencyById(agencyNumber).orElseThrow();
-        ContaBancaria deletedAccount = getBankAccountByAgency(agencyNumber, accountNumber).orElseThrow();
+        ContaObject deletedAccount = getBankAccountByAgency(agencyNumber, accountNumber).orElseThrow();
         agency.getContasAtivas().remove(deletedAccount);
         repository.save(agency);
         return Optional.of(deletedAccount);
     }
 
     @Override
-    public Optional<ContaBancaria> deleteAccountByClient(String cpf) {
+    public Optional<ContaObject> deleteAccountByClient(String cpf) {
         if (!verifyClient(cpf)) return Optional.empty();
-        ContaBancaria deletedAccount = searchAccountByClient(cpf);
-        Agencia agency = getAgencyById(deletedAccount.getAgencia()).orElseThrow();
+        ContaObject deletedAccount = searchAccountByClient(cpf);
+        Agencia agency = getAgencyById(deletedAccount.getNumAgencia()).orElseThrow();
         agency.getContasAtivas().remove(deletedAccount);
         repository.save(agency);
         return Optional.of(deletedAccount);
@@ -146,26 +145,27 @@ public class ContaServiceImpl implements ContaService {
     private boolean verifyClient(String cpf) {
         String formatedCPF = UtilFormatacoes.formatarCPF(cpf).trim();
         return getAllAgencies().stream()
-                                .map(Agencia::getContasAtivas)
-                                .anyMatch(accountList -> accountList.stream()
-                                                                    .map(ContaBancaria::getClient)
-                                                                    .anyMatch(client -> client.getCpf()
-                                                                                                .equals(formatedCPF)));
+                .map(Agencia::getContasAtivas)
+                .filter(Objects::nonNull).noneMatch(accountList -> accountList.stream()
+                                            .map(ContaObject::getCliente)
+                                            .filter(Objects::nonNull)
+                                            .anyMatch(client -> client.getNonNullCpf()
+                                                                        .equals(formatedCPF)));
     }
 
-    private ContaBancaria searchAccountByClient(String cpf) {
+    private ContaObject searchAccountByClient(String cpf) {
         String formatedCPF = UtilFormatacoes.formatarCPF(cpf).trim();
         return getAllAccountsGroupingByAgency().values()
                                 .stream()
                                 .filter(list -> list.stream()
-                                        .map(ContaBancaria::getClient)
+                                        .map(ContaObject::getCliente)
                                         .map(Client::getCpf)
                                         .collect(Collectors.toList())
                                         .contains(formatedCPF))
                                 .collect(Collectors.toList())
                                 .get(0)
                                 .stream()
-                                .filter(account -> account.getClient()
+                                .filter(account -> account.getCliente()
                                         .getCpf()
                                         .equals(formatedCPF))
                                 .collect(Collectors.toList())

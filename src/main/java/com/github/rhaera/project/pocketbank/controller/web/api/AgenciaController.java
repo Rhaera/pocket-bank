@@ -1,4 +1,4 @@
-package com.github.rhaera.project.pocketbank.controller;
+package com.github.rhaera.project.pocketbank.controller.web.api;
 
 import com.github.rhaera.project.pocketbank.model.dto.sql.AgenciaDTO;
 import com.github.rhaera.project.pocketbank.model.entity.AgenciaEntity;
@@ -52,9 +52,9 @@ public class AgenciaController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AgenciaDTO> getAgencyByNumber(@PathVariable("number") String number) {
         return service.getAgencyByNumber(number).isPresent() ? ResponseEntity.ok(service.getAgencyByNumber(number)
-                .get()
-                .buildLink()
-                .add(Link.of(("api/v1/agencias/number/").concat(number)))) : ResponseEntity.notFound().build();
+                                                                        .get()
+                                                                        .buildLink()
+                                                                        .add(Link.of(("api/v1/agencias/number/").concat(number)))) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("all")

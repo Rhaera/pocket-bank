@@ -9,31 +9,31 @@ import java.nio.charset.StandardCharsets;
 
 @Component
 public final class UtilLocalizacao {
-    private static final String TODAS_AS_UFS_JUNTAS;
+    private static String TODAS_AS_UFS_JUNTAS;
+
     private static final String NO_AGENCIE = "0000";
+
     private static final String BRASIL_UFS = "src/main/resources/static/states.txt";
 
     private UtilLocalizacao() {
     }
 
-    static {
-        StringBuilder sb = new StringBuilder();
+    private static void agregarEstados() {
         try (BufferedReader br = new BufferedReader(new FileReader(BRASIL_UFS))) {
-            br.lines()
-                .map(sb::append)
-                .close();
+            TODAS_AS_UFS_JUNTAS = br.lines()
+                                    .reduce("", String::concat);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
-        TODAS_AS_UFS_JUNTAS = sb.toString();
     }
 
     public static String agenciaMaisProxima(String cep) throws IOException {
+        agregarEstados();
         String uf;
-        URL url = new URL("https://viacep.com.br/ws/" + cep + "/json/");
+        URL url = new URL("https://viacep.com.br/ws/" + cep.trim() + "/json/");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        if (connection.getResponseCode() != 200) throw new RuntimeException("HTTP error code: " + connection.getResponseCode());
+        if (connection.getResponseCode() != 200) throw new IllegalStateException("HTTP error code: " + connection.getResponseCode());
         try (BufferedReader br =
             new BufferedReader(new InputStreamReader(url.openConnection().getInputStream(), StandardCharsets.UTF_8))) {
             uf = br.lines()

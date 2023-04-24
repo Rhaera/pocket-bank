@@ -1,6 +1,6 @@
 package com.github.rhaera.project.pocketbank.model.entity.domain;
 
-import com.github.rhaera.project.pocketbank.model.entity.domain.implementation.ContaBancaria;
+import com.github.rhaera.project.pocketbank.model.dto.mongodb.ContaObject;
 
 import lombok.*;
 
@@ -21,7 +21,7 @@ import java.util.Objects;
 public class Agencia {
 
     @Id private String codigoAgencia;
-    @DBRef @Field("agency_accounts") private List<ContaBancaria> contasAtivas;
+    @DBRef @Field("agency_accounts") private List<ContaObject> contasAtivas;
 
     @Override
     public boolean equals(Object o) {
