@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Pocket Validation</title>
+        <link rel="stylesheet" type="text/css" href="/style-validator.css"/>
+        <link rel="icon" type="image/x-icon" href="/pocketBankLogo.png"/>
+    </head>
+    <body>
+        <div class="container">
+            <div class="title">Clique no botão para validar o email</div>
+            <div class="content">
+                <form action="" name="validator" method="post">
+                    {{^send}}
+                    <div class="validator">
+                        <div class="input-box">
+                            <span class="details">TOKEN</span>
+                            <input type="text" name="token" value="{{#token}}{{token}}{{/token}}" placeholder="Insira o token" required>
+                        </div>
+                    </div>
+                    {{/send}}
+                    <div class="button">
+                        <input type="submit" value="{{#send}}enviar token{{/send}}{{^send}}verificar token{{/send}}">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

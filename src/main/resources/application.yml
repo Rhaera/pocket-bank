@@ -1,3 +1,4 @@
+#file: noinspection undefined
 spring:
   jpa:
     open-in-view: true
@@ -19,13 +20,21 @@ spring:
     schemas: public
     validate-migration-naming: true
   datasource:
-    url: jdbc:postgresql://babar.db.elephantsql.com:5432/mrzniwhc?socketTimeout=3
-    username: mrzniwhc
-    password: 3XsZiHozrHTpq8tz9gNE6aY0RZxe9P5T
+    url: jdbc:postgresql://babar.db.elephantsql.com:5432/pwdslund?socketTimeout=3
+    username: pwdslund
+    password: VEmjS7PHG05ZL4SEq9cfDvEwyoorslFf
     driver-class-name: org.postgresql.Driver
   mustache:
     prefix: [classpath:/templates/]
     suffix: .mustache
+  mail:
+    host: smtp-relay.sendinblue.com
+    port: 587
+    username: rauldantas@usp.br
+    password: Pfw3zxbONRY2anJH
+    protocol: smtp
+  main:
+    allow-circular-references: true
 
 springdoc:
   api-docs:

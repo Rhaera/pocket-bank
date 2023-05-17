@@ -21,10 +21,6 @@ public class AgenciaEntity {
 
     public AgenciaEntity() {
     }
-    /**public AgenciaEntity(Agencia agencia) {
-        number   = agencia.getCodigoAgencia();
-        accounts = agencia.getContasAtivas().size();
-    }*/
     public AgenciaEntity(Long id, String number, String address, Integer accounts) {
         this.id       = id;
         this.number   = number;

@@ -1,6 +1,6 @@
 package com.github.rhaera.project.pocketbank.model.dto.mongodb;
 
-import com.github.rhaera.project.pocketbank.model.entity.domain.Client;
+import com.github.rhaera.project.pocketbank.model.entity.domain.ClientEntity;
 import com.github.rhaera.project.pocketbank.model.entity.domain.MovimentacaoFinanceira;
 import com.github.rhaera.project.pocketbank.model.entity.domain.implementation.ContaBancaria;
 
@@ -27,7 +27,7 @@ public class ContaObject implements Serializable {
     private Set<String> tipos;
     private String numAgencia;
     @Id private String numConta;
-    private Client cliente;
+    private ClientEntity cliente;
     private LocalDateTime dataCriacao;
     private List<MovimentacaoFinanceira> extrato;
     private BigDecimal saldo;

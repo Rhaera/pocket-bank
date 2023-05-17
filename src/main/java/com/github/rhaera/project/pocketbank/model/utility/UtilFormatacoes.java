@@ -2,6 +2,10 @@ package com.github.rhaera.project.pocketbank.model.utility;
 
 import com.github.rhaera.project.pocketbank.controller.exception.FormatacaoIlegalException;
 import com.github.rhaera.project.pocketbank.controller.exception.IdadeIlegalException;
+import com.github.rhaera.project.pocketbank.model.dto.sql.ClientDTO;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 import org.springframework.stereotype.Component;
 
@@ -9,12 +13,41 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Component
 public final class UtilFormatacoes {
-
     private UtilFormatacoes() {
 
+    }
+
+    public static class ValidadorParaEmail implements ConstraintValidator<ValidarEmail, String> {
+
+        private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$";
+        
+        @Override
+        public void initialize(ValidarEmail constraintAnnotation) {
+            ConstraintValidator.super.initialize(constraintAnnotation);
+        }
+
+        @Override
+        public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
+            return Pattern.compile(EMAIL_PATTERN).matcher(email).matches();
+        }
+    }
+
+    public static class ValidadorParaSenhas implements ConstraintValidator<ConfirmarSenha, Object> {
+
+        @Override
+        public void initialize(ConfirmarSenha constraintAnnotation) {
+            ConstraintValidator.super.initialize(constraintAnnotation);
+        }
+
+        @Override
+        public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
+            ClientDTO dto = (ClientDTO) o;
+            return dto.getSenha().equals(dto.getConfirmarSenha());
+        }
     }
 
     public static <T> String formatarCPF(T cpf) {
@@ -29,7 +62,7 @@ public final class UtilFormatacoes {
         return String.format("(%s) %s %s-%s", celularFormat.substring(0, 2), celularFormat.charAt(2), celularFormat.substring(3, 7), celularFormat.substring(7));
     }
 
-    public static <T> String formatarDataNascimento(T dataNascimento) {
+    public static <T> LocalDate formatarDataNascimento(T dataNascimento) {
         apenasNumerosEValidarTamanho(dataNascimento, 8);
         String dataNascimentoFormat = String.valueOf(dataNascimento).trim();
         dataNascimentoFormat = String.format("%s/%s/%s", dataNascimentoFormat.substring(0, 2),
@@ -39,7 +72,9 @@ public final class UtilFormatacoes {
                             Integer.parseInt(dataNascimentoFormat.substring(3, 5)),
                             Integer.parseInt(dataNascimentoFormat.substring(6))).plusYears(18).isAfter(LocalDate.now()))
             throw new IdadeIlegalException("Menor de 18 anos!");
-        return dataNascimentoFormat;
+        return LocalDate.of(Integer.parseInt(dataNascimentoFormat.substring(6)),
+                Integer.parseInt(dataNascimentoFormat.substring(3, 5)),
+                Integer.parseInt(dataNascimentoFormat.substring(0, 1)));
     }
 
     public static <T> String validarFormatacaoEmail(T email) {

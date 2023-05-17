@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import org.springframework.hateoas.RepresentationModel;
-import org.springframework.hateoas.server.core.Relation;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Schema(title = "Client immutable data for MongoDB")
+@Schema(title = "ClientEntity immutable data for MongoDB")
 @Relation(collectionRelation = "pocket_bank_clients")
 public class ClientForm extends RepresentationModel<ClientForm> implements Serializable {
     private String cpf;

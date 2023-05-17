@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>PockeConta</title>
+        <link rel="stylesheet" type="text/css" href="/style-signup.css"/>
+        <link rel="icon" type="image/x-icon" href="/pocketBankLogo.png"/>
+    </head>
+    <body>
+        <div class="container">
+            <div class="title">Abra sua PockeConta</div>
+            <div class="content">
+                {{#user}}
+                <form action="" onsubmit="return validation()" name="user" method="post">
+                    <span id="error"></span>
+                    <div class="user-details">
+                        <div class="input-box">
+                            <span class="details">Nome Completo</span>
+                            <input type="text" name="name" pattern="[A-Za-z ]*" value="{{#name}}{{name}}{{/name}}" placeholder="Insira o nome (sem acentos)" required id="nomeid">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">CPF</span>
+                            <input type="number" name="cpf" value="{{#cpf}}{{cpf}}{{/cpf}}" placeholder="Apenas números" required id="cpf">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Data de Nascimento</span>
+                            <input type="number" name="dataNascimento" value="{{#dataNascimento}}{{dataNascimento}}{{/dataNascimento}}" placeholder="Apenas números" required id="data">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">CEP</span>
+                            <input type="number" name="cep" value="{{#cep}}{{cep}}{{/cep}}" placeholder="Apenas números" required id="cep">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Email</span>
+                            <input type="text" name="email" pattern="^[a-z0-9._-]+@[a-zA-Z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$" value="{{#email}}{{email}}{{/email}}" placeholder="Insira seu email" required id="mailid">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Celular</span>
+                            <input type="number" name="celular" value="{{#celular}}{{celular}}{{/celular}}" placeholder="Apenas números (com DDD)" required id="cell">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Senha</span>
+                            <input type="number" name="senha" value="{{#senha}}{{senha}}{{/senha}}" placeholder="Senha de 6 números" required id="pass">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Confirmar Senha</span>
+                            <input type="text" name="confirmarSenha" value="{{#confirmarSenha}}{{confirmarSenha}}{{/confirmarSenha}}" placeholder="Insira a mesma senha" required id="confirm-pass">
+                        </div>
+                    </div>
+                    <div class="gender-details">
+                        <input type="radio" name="genero" value="Masculino" {{#genero}}checked{{/genero}} id="dot-1" required>
+                        <input type="radio" name="genero" value="Feminino" {{#genero}}checked{{/genero}} id="dot-2" required>
+                        <input type="radio" name="genero" value="Prefiro nao dizer" {{#genero}}checked{{/genero}} id="dot-3" required>
+                        <span class="gender-title">Gênero</span>
+                        <div class="category">
+                            <label for="dot-1">
+                                <span class="dot one"></span>
+                                <span class="gender">Masculino</span>
+                            </label>
+                            <label for="dot-2">
+                                <span class="dot two"></span>
+                                <span class="gender">Feminino</span>
+                            </label>
+                            <label for="dot-3">
+                                <span class="dot three"></span>
+                                <span class="gender">Prefiro não dizer</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="button">
+                        <input type="submit" value="continuar">
+                    </div>
+                </form>
+                {{/user}}
+            </div>
+        </div>
+        <script language="JavaScript">
+            function validation() {
+                var password = document.getElementById('pass').value;
+                var passwordConfirmation = document.getElementById('confirm-pass').value;
+                var name = document.getElementById('nomeid').value;
+                var cpf = document.getElementById('cpf').value;
+                var birthDate = document.getElementById('data').value;
+                var zip = document.getElementById('cep').value;
+                var email = document.getElementById('mailid').value;
+                var cellphone = document.getElementById('cell').value;
+                var error = document.getElementById('error');
+                if (!nameRegexValidation(name)) {
+                    error.textContent = "INSIRA APENAS AS LETRAS DO NOME (SEM ACENTOS)!";
+                    setTimeout(eraseError, 5000);
+                    return false;
+                }
+                if (cpf.length != 11) {
+                    error.textContent = "O CPF DEVE CONTER 11 DÍGITOS!";
+                    setTimeout(eraseError, 5000);
+                    return false;
+                }
+                if (birthDate.length != 8) {
+                    error.textContent = "A DATA DEVE POSSUIR 8 DÍGITOS!";
+                    setTimeout(eraseError, 5000);
+                    return false;
+                }
+                if (!(biggerMonths(birthDate) || smallerMonths(birthDate) || smallestMonth(birthDate)) ||
+                    Number(`${birthDate.substring(4, 8)}`) < 1900) {
+                    error.textContent = "INSIRA UMA DATA VÁLIDA!";
+                    setTimeout(eraseError, 5000);
+                    return false;
+                }
+                if (!majorityValidation(birthDate)) {
+                    error.textContent = "MENOR DE IDADE!";
+                    setTimeout(eraseError, 5000);
+                    return false;
+                }
+                if (zip.length != 8) {
+                    error.textContent = "O CEP DEVE POSSUIR 8 DÍGITOS!";
+                    setTimeout(eraseError, 5000);
+                    return false;
+                }
+                if (email.indexOf("*") != -1) {
+                    error.textContent = "DIGITE UM EMAIL VÁLIDO!";
+                    setTimeout(eraseError, 5000);
+                    return false;
+                }
+                if (cellphone.length != 11) {
+                    error.textContent = "DIGITE UM NÚMERO VÁLIDO!";
+                    setTimeout(eraseError, 5000);
+                    return false;
+                }
+                if (password != passwordConfirmation) {
+                    error.textContent = "AS SENHAS DEVEM SER IGUAIS!";
+                    setTimeout(eraseError, 5000);
+                    return false;
+                }
+                if (password.length != 6) {
+                    error.textContent = "AS SENHAS DEVEM TER 6 NÚMEROS!";
+                    setTimeout(eraseError, 5000);
+                    return false;
+                }
+                error.textContent = "";
+                return true;
+            }
+            function eraseError() {
+                var erasedError = document.getElementById('error');
+                erasedError.textContent = "";
+            }
+            function biggerMonths(birthDate) {
+                if ((Number(`${birthDate.substring(2, 4)}`) == 1 ||
+                    Number(`${birthDate.substring(2, 4)}`) == 3 ||
+                    Number(`${birthDate.substring(2, 4)}`) == 5 ||
+                    Number(`${birthDate.substring(2, 4)}`) == 7 ||
+                    Number(`${birthDate.substring(2, 4)}`) == 8 ||
+                    Number(`${birthDate.substring(2, 4)}`) == 10 ||
+                    Number(`${birthDate.substring(2, 4)}`) == 12) && (Number(`${birthDate.substring(0, 2)}`) > 0 && Number(`${birthDate.substring(0, 2)}`) < 32)) {
+                    return true;
+                }
+                return false;
+            }
+            function smallerMonths(birthDate) {
+                if ((Number(`${birthDate.substring(2, 4)}`) == 4 ||
+                    Number(`${birthDate.substring(2, 4)}`) == 6 ||
+                    Number(`${birthDate.substring(2, 4)}`) == 9 ||
+                    Number(`${birthDate.substring(2, 4)}`) == 11) && (Number(`${birthDate.substring(0, 2)}`) > 0 && Number(`${birthDate.substring(0, 2)}`) < 31)) {
+                    return true;
+                }
+                return false;
+            }
+            function smallestMonth(birthDate) {
+                if (Number(`${birthDate.substring(2, 4)}`) == 2 &&
+                    Number(`${birthDate.substring(4, 8)}`) % 4 == 0 &&
+                    (Number(`${birthDate.substring(0, 2)}`) > 0 && Number(`${birthDate.substring(0, 2)}`) < 30)) {
+                    return true;
+                }
+                if (Number(`${birthDate.substring(2, 4)}`) == 2 &&
+                    (Number(`${birthDate.substring(0, 2)}`) > 0 && Number(`${birthDate.substring(0, 2)}`) < 29)) {
+                    return true;
+                }
+                return false;
+            }
+            function majorityValidation(birthDate) {
+                const today = new Date();
+                const month = today.getMonth() + 1 - Number(`${birthDate.substring(2, 4)}`);
+                const day = today.getDate() - Number(`${birthDate.substring(0, 2)}`);
+                let age = today.getFullYear() - Number(`${birthDate.substring(4, 8)}`);
+                return age > 18 || (age == 18 && month > 0 || (age == 18 && month == 0 && day >= 0));
+            }
+            function nameRegexValidation(name) {
+                return (name.indexOf('´') == -1 &&
+                        name.indexOf('`') == -1 &&
+                        name.indexOf('~') == -1 &&
+                        name.indexOf('^') == -1 &&
+                        name.indexOf('°') == -1 &&
+                        name.indexOf('§') == -1 &&
+                        name.indexOf("'") == -1 &&
+                        name.indexOf('"') == -1);
+            }
+        </script>
+    </body>
+</html>
+<!--^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$ FORMER NAME REGEX-->

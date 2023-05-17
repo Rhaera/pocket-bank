@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Pocket Bank</title>
+        <link rel="stylesheet" type="text/css" href="/style-revenue.css"/>
+        <link rel="icon" type="image/x-icon" href="/pocketBankLogo.png"/>
+    </head>
+    <body>
+        <div class="container">
+            <div class="title">Qual a sua profissão e renda?</div>
+            <div class="content">
+                <form action="" name="job-and-revenue" method="post">
+                    <div class="user-details">
+                        <div class="input-box">
+                            <span class="details">Profissão</span>
+                            <input type="text" name="job" pattern="[A-Za-z ]*" value="{{#job}}{{job}}{{/job}}" placeholder="Insira sua profissão" required>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Renda mensal</span>
+                            <input type="number" name="revenue" maxlength="10" value="{{#revenue}}{{revenue}}{{/revenue}}" placeholder="Insira sua renda" required>
+                        </div>
+                    </div>
+                    <div class="button">
+                        <input type="submit" value="cadastrar">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

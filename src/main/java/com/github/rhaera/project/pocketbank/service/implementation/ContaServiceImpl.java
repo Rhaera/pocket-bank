@@ -3,7 +3,7 @@ package com.github.rhaera.project.pocketbank.service.implementation;
 import com.github.rhaera.project.pocketbank.model.dto.sql.AgenciaDTO;
 import com.github.rhaera.project.pocketbank.model.dto.mongodb.ContaObject;
 import com.github.rhaera.project.pocketbank.model.entity.domain.Agencia;
-import com.github.rhaera.project.pocketbank.model.entity.domain.Client;
+import com.github.rhaera.project.pocketbank.model.entity.domain.ClientEntity;
 import com.github.rhaera.project.pocketbank.model.utility.UtilFormatacoes;
 import com.github.rhaera.project.pocketbank.repository.ContaRepository;
 import com.github.rhaera.project.pocketbank.service.AgenciaService;
@@ -159,7 +159,7 @@ public class ContaServiceImpl implements ContaService {
                                 .stream()
                                 .filter(list -> list.stream()
                                         .map(ContaObject::getCliente)
-                                        .map(Client::getCpf)
+                                        .map(ClientEntity::getCpf)
                                         .collect(Collectors.toList())
                                         .contains(formatedCPF))
                                 .collect(Collectors.toList())

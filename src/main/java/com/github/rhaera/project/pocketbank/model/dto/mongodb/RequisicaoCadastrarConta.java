@@ -1,8 +1,8 @@
 package com.github.rhaera.project.pocketbank.model.dto.mongodb;
 
 import com.github.rhaera.project.pocketbank.controller.web.api.ContaController;
+import com.github.rhaera.project.pocketbank.model.entity.domain.ClientEntity;
 import com.github.rhaera.project.pocketbank.model.utility.UtilLocalizacao;
-import com.github.rhaera.project.pocketbank.model.entity.domain.Client;
 import com.github.rhaera.project.pocketbank.repository.ContaRepository;
 
 import static com.github.rhaera.project.pocketbank.model.entity.domain.implementation.ContaBancaria.TipoConta;
@@ -32,7 +32,7 @@ public final class RequisicaoCadastrarConta extends RepresentationModel<Requisic
     private final static RequisicaoCadastrarConta INSTANCE = new RequisicaoCadastrarConta();
 
     @NonNull
-    private Client client;
+    private ClientEntity client;
 
     @NonNull
     private String numeroConta;
@@ -44,7 +44,7 @@ public final class RequisicaoCadastrarConta extends RepresentationModel<Requisic
 
     private ContaRepository repository;
 
-    private RequisicaoCadastrarConta(@NonNull Client client, @NonNull String number, @NonNull String agencyNumber) {
+    private RequisicaoCadastrarConta(@NonNull ClientEntity client, @NonNull String number, @NonNull String agencyNumber) {
         this.client        = client;
         this.numeroConta   = number;
         this.numeroAgencia = agencyNumber;
@@ -86,7 +86,7 @@ public final class RequisicaoCadastrarConta extends RepresentationModel<Requisic
         numeroConta = numeroConta.substring(0, 5).concat(("-").concat(numeroConta.substring(5)));
     }
 
-    public static RequisicaoCadastrarConta getInstance(Client client, String number, String agencyNumber) {
+    public static RequisicaoCadastrarConta getInstance(ClientEntity client, String number, String agencyNumber) {
         INSTANCE.client        = client;
         INSTANCE.numeroConta   = number;
         INSTANCE.numeroAgencia = agencyNumber;

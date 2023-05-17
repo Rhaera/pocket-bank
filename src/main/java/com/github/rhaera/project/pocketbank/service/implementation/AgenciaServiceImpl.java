@@ -68,8 +68,8 @@ public class AgenciaServiceImpl implements AgenciaService {
     public Optional<AgenciaDTO> updateAgency(AgenciaEntity requestEntity) {
         if (getAgencyByNumber(requestEntity.getNumber().trim()).isPresent()) {
             AgenciaDTO existingAgency = getAgencyByNumber(requestEntity.getNumber()
-                                                                            .trim())
-                                                                            .get();
+                                                                        .trim())
+                                                                        .get();
             existingAgency.setAccounts(requestEntity.getAccounts());
             return Optional.ofNullable(repository.save(existingAgency.toEntity()).toDto());
         }

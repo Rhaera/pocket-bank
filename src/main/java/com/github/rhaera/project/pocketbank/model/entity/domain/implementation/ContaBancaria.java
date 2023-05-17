@@ -1,8 +1,8 @@
 package com.github.rhaera.project.pocketbank.model.entity.domain.implementation;
 
 import com.github.rhaera.project.pocketbank.controller.exception.TipoContaIlegalException;
+import com.github.rhaera.project.pocketbank.model.entity.domain.ClientEntity;
 import com.github.rhaera.project.pocketbank.model.entity.interfaces.ContaMultiModal;
-import com.github.rhaera.project.pocketbank.model.entity.domain.Client;
 import com.github.rhaera.project.pocketbank.model.entity.domain.MovimentacaoFinanceira;
 import com.github.rhaera.project.pocketbank.model.utility.UtilLocalizacao;
 
@@ -46,7 +46,7 @@ public abstract class ContaBancaria implements ContaMultiModal {
     @NonNull
     private final String numeroConta;
     @NonNull
-    private final Client client;
+    private final ClientEntity client;
     @NonNull
     private final LocalDate criacaoDaConta;
     private final List<MovimentacaoFinanceira> extrato;
@@ -57,13 +57,13 @@ public abstract class ContaBancaria implements ContaMultiModal {
         private final EnumSet<TipoConta> tipos = EnumSet.noneOf(TipoConta.class);
         private final String agencia;
         private final String numeroConta;
-        private final Client client;
+        private final ClientEntity client;
         private final LocalDate criacaoDaConta = LocalDate.now();
         private final List<MovimentacaoFinanceira> extrato = new ArrayList<>();
         private BigDecimal saldo = BigDecimal.ZERO;
         private boolean cartaoDebito = false;
 
-        public Builder(String numeroConta, Client client) throws IOException {
+        public Builder(String numeroConta, ClientEntity client) throws IOException {
             this.agencia = UtilLocalizacao.agenciaMaisProxima(client.getCep());
             this.numeroConta = numeroConta;
             this.client = client;

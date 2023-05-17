@@ -1,6 +1,6 @@
 package com.github.rhaera.project.pocketbank.model.entity.domain.implementation;
 
-import com.github.rhaera.project.pocketbank.model.entity.domain.Client;
+import com.github.rhaera.project.pocketbank.model.entity.domain.ClientEntity;
 import com.github.rhaera.project.pocketbank.model.entity.interfaces.ContaCorrenteESalario;
 
 import lombok.Getter;
@@ -19,8 +19,8 @@ public class ContaSalario extends ContaBancaria implements ContaCorrenteESalario
         private int limiteSaquesMensais   = 5;
         private final int numeroDeSaquesMensais = 0;
 
-        public Builder(String numeroConta, Client client) throws IOException {
-            super(numeroConta, client);
+        public Builder(String numeroConta, ClientEntity clientEntity) throws IOException {
+            super(numeroConta, clientEntity);
         }
 
         @Override

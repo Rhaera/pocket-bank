@@ -1,6 +1,6 @@
 package com.github.rhaera.project.pocketbank.model.entity.domain.implementation;
 
-import com.github.rhaera.project.pocketbank.model.entity.domain.Client;
+import com.github.rhaera.project.pocketbank.model.entity.domain.ClientEntity;
 import com.github.rhaera.project.pocketbank.model.entity.interfaces.ContaTripla;
 import com.github.rhaera.project.pocketbank.service.domain.Pix;
 
@@ -28,8 +28,8 @@ public class ContaCorrente extends ContaBancaria implements ContaTripla {
         private String chaveAleatoria = "";
         private final Pix chavesPix = new Pix(EnumSet.noneOf(TipoChave.class));
 
-        public Builder(String numeroConta, Client client) throws IOException {
-            super(numeroConta, client);
+        public Builder(String numeroConta, ClientEntity clientEntity) throws IOException {
+            super(numeroConta, clientEntity);
         }
 
         @Override

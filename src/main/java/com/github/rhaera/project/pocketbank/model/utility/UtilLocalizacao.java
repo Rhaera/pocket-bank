@@ -10,14 +10,10 @@ import java.nio.charset.StandardCharsets;
 @Component
 public final class UtilLocalizacao {
     private static String TODAS_AS_UFS_JUNTAS;
-
     private static final String NO_AGENCIE = "0000";
-
     private static final String BRASIL_UFS = "src/main/resources/static/states.txt";
-
     private UtilLocalizacao() {
     }
-
     private static void agregarEstados() {
         try (BufferedReader br = new BufferedReader(new FileReader(BRASIL_UFS))) {
             TODAS_AS_UFS_JUNTAS = br.lines()
@@ -33,10 +29,9 @@ public final class UtilLocalizacao {
         String uf;
         URL url = new URL("https://viacep.com.br/ws/" + cep.trim() + "/json/");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        if (connection.getResponseCode() != 200) throw new IllegalStateException("HTTP error code: " + connection.getResponseCode());
-        try (BufferedReader br =
-            new BufferedReader(new InputStreamReader(url.openConnection().getInputStream(), StandardCharsets.UTF_8))) {
-            uf = br.lines()
+        if (connection.getResponseCode() != 200) throw new IllegalArgumentException("400 ERROR: BAD_REQUEST -> 'Cep Inválido!'");
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream(), StandardCharsets.UTF_8))) {
+            uf = br.lines() // ObjectMapper()
                     .filter(s -> s.contains("uf"))
                     .map(s -> s.substring(s.lastIndexOf(" "), s.indexOf(",")).trim().substring(1, 3))
                     .reduce("", String::concat);

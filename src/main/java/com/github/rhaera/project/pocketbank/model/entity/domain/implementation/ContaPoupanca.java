@@ -1,6 +1,6 @@
 package com.github.rhaera.project.pocketbank.model.entity.domain.implementation;
 
-import com.github.rhaera.project.pocketbank.model.entity.domain.Client;
+import com.github.rhaera.project.pocketbank.model.entity.domain.ClientEntity;
 import com.github.rhaera.project.pocketbank.model.entity.interfaces.ContaCorrenteEPoupanca;
 
 import lombok.Getter;
@@ -13,8 +13,8 @@ public class ContaPoupanca extends ContaBancaria implements ContaCorrenteEPoupan
     private BigDecimal saldoPoupanca = BigDecimal.ZERO;
 
     public static class Builder extends ContaBancaria.Builder<Builder> {
-        public Builder(String numeroConta, Client client) throws IOException {
-            super(numeroConta, client);
+        public Builder(String numeroConta, ClientEntity clientEntity) throws IOException {
+            super(numeroConta, clientEntity);
         }
 
         @Override

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -11,18 +10,16 @@
 		<version>3.0.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-
 	<groupId>com.github.rhaera.project</groupId>
 	<artifactId>pocket-bank</artifactId>
 	<version>1.0.0</version>
-
 	<name>Pocket Bank</name>
 	<description>Pocket Bank Project with Spring Boot 3 + MongoDB + RabbitMQ</description>
 
 	<properties>
 		<java.version>11</java.version>
 		<testcontainers.version>1.17.6</testcontainers.version>
-<!--		<vaadin.version>23.0.0</vaadin.version>-->
+	<!--<vaadin.version>23.0.0</vaadin.version>-->
 	</properties>
 
 	<dependencies>
@@ -80,6 +77,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
@@ -125,6 +126,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
@@ -159,7 +164,7 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.5.4.Final</version>
 		</dependency>
-<!--		<dependency>
+		<!--<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-spring-boot-starter</artifactId>
 		</dependency>-->
@@ -182,7 +187,7 @@
 
 	<dependencyManagement>
 		<dependencies>
-<!--			<dependency>
+		<!--<dependency>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-bom</artifactId>
 				<version>${vaadin.version}</version>
