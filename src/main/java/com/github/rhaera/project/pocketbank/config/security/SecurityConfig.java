@@ -10,6 +10,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -41,10 +42,9 @@ public class SecurityConfig {
     private final ClientDetailService detailService;
     private final File privateKeyFile = new File("src/main/resources/certs/private.pem");
     private final File publicKeyFile = new File("src/main/resources/certs/public.pem");
-    public SecurityConfig(ClientDetailService detailService) {
+    public SecurityConfig(@Lazy ClientDetailService detailService) {
         this.detailService = detailService;
     }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(auth -> auth.anyRequest()

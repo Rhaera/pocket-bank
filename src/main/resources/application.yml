@@ -1,4 +1,3 @@
-#file: noinspection undefined
 spring:
   jpa:
     open-in-view: true
@@ -22,16 +21,16 @@ spring:
   datasource:
     url: jdbc:postgresql://babar.db.elephantsql.com:5432/pwdslund?socketTimeout=3
     username: pwdslund
-    password: VEmjS7PHG05ZL4SEq9cfDvEwyoorslFf
+    password: tV1kNS_ZkDVpbHfoG7YhvyNdhFYYA4RT
     driver-class-name: org.postgresql.Driver
   mustache:
     prefix: [classpath:/templates/]
     suffix: .mustache
   mail:
-    host: smtp-relay.sendinblue.com
-    port: 587
-    username: rauldantas@usp.br
-    password: Pfw3zxbONRY2anJH
+    host: mail.smtp2go.com
+    port: 2525
+    username: rsilva.dev
+    password: jCSq5jvd6BwEuyP2
     protocol: smtp
   main:
     allow-circular-references: true

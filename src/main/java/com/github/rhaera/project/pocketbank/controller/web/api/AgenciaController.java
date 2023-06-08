@@ -20,9 +20,9 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/agencias/")
+@CrossOrigin("**")
 @Slf4j
 public class AgenciaController {
-
     private final AgenciaService service;
 
     public AgenciaController(AgenciaService service) {

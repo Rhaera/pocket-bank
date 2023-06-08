@@ -9,14 +9,19 @@
     </head>
     <body>
         <div class="container">
-            <div class="title">Clique no botão para validar o email</div>
+            <div class="title">{{#send}}Clique no botão para validar o email{{/send}}{{^send}}Insira o token enviado para o email{{/send}}</div>
+            <span hidden="hidden" id="res">{{response}}</span>
             <div class="content">
-                <form action="" name="validator" method="post">
+                <span id="error"></span>
+                {{#alert}}
+                <span id="err">ERRO! Tente Novamente</span>
+                {{/alert}}
+                <form action="" onsubmit="return tokenValidation()" name="validator" method="post">
                     {{^send}}
                     <div class="validator">
                         <div class="input-box">
                             <span class="details">TOKEN</span>
-                            <input type="text" name="token" value="{{#token}}{{token}}{{/token}}" placeholder="Insira o token" required>
+                            <input type="text" name="token" value="{{#token}}{{token}}{{/token}}" placeholder="Insira o token" required id="token">
                         </div>
                     </div>
                     {{/send}}
@@ -26,5 +31,31 @@
                 </form>
             </div>
         </div>
+        <script language="JavaScript">
+            function tokenValidation() {
+                var token = document.getElementById('token').value;
+                var response = document.getElementById('res')
+                                        .outerHTML
+                                        .valueOf()
+                                        .toString()
+                                        .substring(
+                                        31,
+                                        document.getElementById('res')
+                                                .outerHTML
+                                                .valueOf()
+                                                .toString()
+                                                .length - 7
+                                        );
+                if (token === response) return true;
+                var error = document.getElementById('error');
+                error.textContent = "TOKEN INCORRETO! TENTE NOVAMENTE!";
+                setTimeout(eraseError, 5000);
+                return false;
+            }
+            function eraseError() {
+                var erasedError = document.getElementById('error');
+                erasedError.textContent = "";
+            }
+        </script>
     </body>
 </html>

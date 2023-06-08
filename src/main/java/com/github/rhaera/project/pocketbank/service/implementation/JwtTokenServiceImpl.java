@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
-import java.security.interfaces.RSAPrivateKey;
 import java.time.temporal.ChronoUnit;
 import java.time.Instant;
 import java.util.Objects;
@@ -19,24 +18,20 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JwtTokenServiceImpl implements JwtTokenService {
     private final JwtEncoder jwtEncoder;
-
     private final JwtDecoder jwtDecoder;
-
-    private final RSAPrivateKey rsaPrivateKey;
-
     private static final String NO_TOKEN_MADE = "NO TOKEN MADE!";
-
     private String token;
+
     @Override
-    public String getToken(Authentication auth, Instant creationInstant) {
+    public String getToken(Authentication auth) {
         token = jwtEncoder.encode(JwtEncoderParameters.from(JwtClaimsSet.builder()
-                                                                        .issuer(rsaPrivateKey.toString()
-                                                                        .concat(auth.getPrincipal()
+                                                                        .issuer(auth.getPrincipal()
                                                                         .toString()
-                                                                        .concat(auth.getCredentials()
-                                                                        .toString())))
-                                                                        .issuedAt(creationInstant)
-                                                                        .expiresAt(creationInstant.plus(1, ChronoUnit.HOURS))
+                                                                        .concat(auth.getDetails()
+                                                                        .toString()))
+                                                                        .issuedAt(Instant.now())
+                                                                        .expiresAt(Instant.now()
+                                                                        .plus(1, ChronoUnit.HOURS))
                                                                         .subject(auth.getName())
                                                                         .claim("scope", auth.getAuthorities()
                                                                         .stream()

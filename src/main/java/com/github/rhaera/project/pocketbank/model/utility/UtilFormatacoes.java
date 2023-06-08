@@ -68,13 +68,18 @@ public final class UtilFormatacoes {
         dataNascimentoFormat = String.format("%s/%s/%s", dataNascimentoFormat.substring(0, 2),
                                             dataNascimentoFormat.substring(2, 4),
                                             dataNascimentoFormat.substring(4));
-        if (LocalDate.of(Integer.parseInt(dataNascimentoFormat.substring(0, 2)),
-                            Integer.parseInt(dataNascimentoFormat.substring(3, 5)),
-                            Integer.parseInt(dataNascimentoFormat.substring(6))).plusYears(18).isAfter(LocalDate.now()))
+        if (LocalDate.of(
+                        Integer.parseInt(dataNascimentoFormat.substring(6)),
+                        Integer.parseInt(dataNascimentoFormat.substring(3, 5)),
+                        Integer.parseInt(dataNascimentoFormat.substring(0, 2))
+                        ).plusYears(18)
+                        .isAfter(LocalDate.now()))
             throw new IdadeIlegalException("Menor de 18 anos!");
-        return LocalDate.of(Integer.parseInt(dataNascimentoFormat.substring(6)),
+        return LocalDate.of(
+                Integer.parseInt(dataNascimentoFormat.substring(6)),
                 Integer.parseInt(dataNascimentoFormat.substring(3, 5)),
-                Integer.parseInt(dataNascimentoFormat.substring(0, 1)));
+                Integer.parseInt(dataNascimentoFormat.substring(0, 2))
+        );
     }
 
     public static <T> String validarFormatacaoEmail(T email) {
@@ -91,7 +96,7 @@ public final class UtilFormatacoes {
                 .concat(Arrays.toString(UUID.randomUUID()
                         .toString()
                         .concat(Arrays.toString(Base64.getEncoder()
-                                .encode(UUID.randomUUID()
+                                        .encode(UUID.randomUUID()
                                         .toString()
                                         .getBytes())))
                         .split("-")));
